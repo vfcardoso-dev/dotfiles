@@ -1,7 +1,10 @@
 # My dotfiles
 
+
 ```powershell
-get-childitem 'C:\Coding\Studying\dotfiles\pwsh' | foreach-object { 
-  . $_.FullName 
+# How to import on pwsh
+
+get-childitem 'c:\path\to\dotfiles\pwsh' | foreach-object { 
+  . $_.fullname 
 }
 ```

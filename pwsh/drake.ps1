@@ -76,7 +76,7 @@ function Invoke-SwitchDb {
 
     Invoke-Sqlcmd -ServerInstance "localhost" -Database "master" -Query $query
 
-    echo 'Bancos master e testes definidos para o ambiente ' $suffix;
+    write-host "Bancos master e testes definidos para o ambiente '$($suffix)'";
 }
 
 function Invoke-GetAllFunctions {
@@ -103,7 +103,7 @@ function Invoke-HelpDrake {
     write-host '==============================='
 
     foreach ($i in Invoke-GetAllFunctions) {
-        write-host "- $($i.Item1): $($i.Item3)"
+        write-host "- $($i.Item1):   $($i.Item3)"
     }
 
     write-host ''

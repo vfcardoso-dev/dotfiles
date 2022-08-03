@@ -11,17 +11,17 @@ function Invoke-ClearAll { kli clear redis && kli clear messages _drake_ Ok }
 
 # Recuperar nova chave de script
 function Invoke-NewDbScript { 
-    param([Parameter()][string] $description)
+    param([Parameter(Mandatory=$true)][string] $description)
     kli db script $description
 }
 
 # Apply patches nos bancos master e testes do drake local (RC)
 function Invoke-PatchMaster { cmd /c 'kli db patch --% "^drake_(master|testes)$" 1' }
 
-# Apply patches nos bancos master e testes do drake local
+# Apply patches nos bancos de tenants do drake local (RC)
 function Invoke-PatchTenants { cmd /c 'kli db patch --% "rc_drake_" 1' }
 
-# Apply patches nos bancos hotfix
+# Apply patches nos bancos hotfix (HF)
 function Invoke-PatchHfTenants { cmd /c 'kli db patch --% "^hf_drake_" 2' }
 
 # Apply patches nos bancos master e testes do drake local (HF)
@@ -29,18 +29,19 @@ function Invoke-PatchHfMaster { cmd /c 'kli db patch --% "^drake_(master|testes)
 
 # Traduzir com kli
 function Invoke-TranslateAdd { 
-    param([Parameter()][string] $term, [Parameter()][string] $key)
+    param([Parameter(Mandatory=$true)][string] $term, [Parameter(Mandatory=$true)][string] $key)
     kli text translate add $term JS__COMMON__$key 1
 }
 
 # Remover tradução com kli
 function Invoke-TranslateDel { 
-    param([Parameter()][string] $key)
+    param([Parameter(Mandatory=$true)][string] $key)
     kli text translate del 1 JS__COMMON__$key
 }
 
+# Alternar entre bancos master RC e HF
 function Invoke-SwitchDb {
-    param([Parameter()][string] $suffix)
+    param([Parameter(Mandatory=$true)][string] $suffix)
 
     $suffix = $suffix -eq '' ? 'rc' : $suffix;
 
@@ -74,31 +75,43 @@ function Invoke-SwitchDb {
     Import-Module sqlserver
 
     Invoke-Sqlcmd -ServerInstance "localhost" -Database "master" -Query $query
+
+    echo 'Bancos master e testes definidos para o ambiente ' $suffix;
 }
 
-# function Invoke-ListAliases {
-#     $aliases = New-Object System.Collections.ArrayList;
-#     $aliases.AddRange((
-#         [Tuple]::Create(1,"string 1",$function:InvokeClearAll),
-#         [Tuple]::Create(2,"string 2",$function:InvokeClearAll),
-#         [Tuple]::Create(3,"string 3",$function:Invoke-ClearAll) 
-#     ));
-#     return $aliases
-# }
+function Invoke-GetAllFunctions {
+    $aliases = New-Object System.Collections.ArrayList;
+    $aliases.AddRange((
+        [Tuple]::Create("ngrok-drake", "Invoke-NgrokDrake", "Rodar Ngrok apontando para Drake local"),
+        [Tuple]::Create("ngrok-storage", "Invoke-NgrokStorage", "Rodar Ngrok apontando para azure storage local"),
+        [Tuple]::Create("clearall", "Invoke-ClearAll", "Clear all redis items and core.messages registers"),
+        [Tuple]::Create("patchg", "Invoke-PatchMaster", "Apply patches nos bancos master e testes do drake local (RC)"),
+        [Tuple]::Create("patcht", "Invoke-PatchTenants", "Apply patches nos bancos de tenants do drake local (RC)"),
+        [Tuple]::Create("patchhfm", "Invoke-PatchHfMaster", "Apply patches nos bancos master e testes do drake local (HF)"),
+        [Tuple]::Create("patchhft", "Invoke-PatchHfTenants", "Apply patches nos bancos hotfix (HF)"),
+        [Tuple]::Create("translateadd", "Invoke-TranslateAdd", "Traduzir com kli"),
+        [Tuple]::Create("translatedel", "Invoke-translateDel", "Remover tradução com kli"),
+        [Tuple]::Create("kscript", "Invoke-NewDbScript", "Recuperar nova chave de script"),
+        [Tuple]::Create("switchdb", "Invoke-SwitchDb", "Alternar entre bancos master RC e HF")
+    ));
+    return $aliases
+}
 
-# foreach ($i in Invoke-ListAliases) {
-#     Write-Host $i
-# }
+function Invoke-HelpDrake {
+    write-host '==============================='
+    write-host 'Ajuda - Seção DRAKE:'
+    write-host '==============================='
 
-# aliases
-new-alias -name "ngrok-drake" Invoke-NgrokDrake
-new-alias -name "ngrok-storage" Invoke-NgrokStorage
-new-alias -name "clearall" Invoke-ClearAll
-new-alias -name "patchg" Invoke-PatchMaster
-new-alias -name "patcht" Invoke-PatchTenants
-new-alias -name "patchhfm" Invoke-PatchHfMaster
-new-alias -name "patchhft" Invoke-PatchHfTenants
-new-alias -name "translateadd" Invoke-TranslateAdd
-new-alias -name "translatedel" Invoke-translateDel
-new-alias -name "kscript" Invoke-NewDbScript
-new-alias -name "switchdb" Invoke-SwitchDb
+    foreach ($i in Invoke-GetAllFunctions) {
+        write-host "- $($i.Item1): $($i.Item3)"
+    }
+
+    write-host ''
+}
+
+# registrando aliases
+new-alias -name "dothelp-drake" Invoke-HelpDrake
+
+foreach ($i in Invoke-GetAllFunctions) {
+    new-alias -name $i.Item1 -value $i.Item2
+}

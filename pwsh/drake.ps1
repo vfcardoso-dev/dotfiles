@@ -16,16 +16,10 @@ function Invoke-NewDbScript {
 }
 
 # Apply patches nos bancos master e testes do drake local (RC)
-function Invoke-PatchMaster { cmd /c 'kli db patch --% "^drake_(master|testes)$" 1' }
-
-# Apply patches nos bancos de tenants do drake local (RC)
-function Invoke-PatchTenants { cmd /c 'kli db patch --% "rc_drake_" 1' }
-
-# Apply patches nos bancos hotfix (HF)
-function Invoke-PatchHfTenants { cmd /c 'kli db patch --% "^hf_drake_" 2' }
+function Invoke-PatchMaster { cmd /c 'kli db patch drake_master 1' }
 
 # Apply patches nos bancos master e testes do drake local (HF)
-function Invoke-PatchHfMaster { cmd /c 'kli db patch --% "^drake_(master|testes)$" 2' }
+function Invoke-PatchHfMaster { cmd /c 'kli db patch drake_master 2' }
 
 # Traduzir com kli
 function Invoke-TranslateAdd { 
@@ -36,7 +30,7 @@ function Invoke-TranslateAdd {
 # Remover tradução com kli
 function Invoke-TranslateDel { 
     param([Parameter(Mandatory=$true)][string] $key)
-    kli text translate del 1 JS__COMMON__$key
+    kli text translate del 1 $key
 }
 
 # Alternar entre bancos master RC e HF
@@ -85,10 +79,8 @@ function Invoke-GetAllFunctions {
         [Tuple]::Create("ngrok-drake", "Invoke-NgrokDrake", "Rodar Ngrok apontando para Drake local"),
         [Tuple]::Create("ngrok-storage", "Invoke-NgrokStorage", "Rodar Ngrok apontando para azure storage local"),
         [Tuple]::Create("clearall", "Invoke-ClearAll", "Clear all redis items and core.messages registers"),
-        [Tuple]::Create("patchg", "Invoke-PatchMaster", "Apply patches nos bancos master e testes do drake local (RC)"),
-        [Tuple]::Create("patcht", "Invoke-PatchTenants", "Apply patches nos bancos de tenants do drake local (RC)"),
-        [Tuple]::Create("patchhfm", "Invoke-PatchHfMaster", "Apply patches nos bancos master e testes do drake local (HF)"),
-        [Tuple]::Create("patchhft", "Invoke-PatchHfTenants", "Apply patches nos bancos hotfix (HF)"),
+        [Tuple]::Create("patchrc", "Invoke-PatchMaster", "Apply patches nos bancos master e testes do drake local (RC)"),
+        [Tuple]::Create("patchhf", "Invoke-PatchHfMaster", "Apply patches nos bancos master e testes do drake local (HF)"),
         [Tuple]::Create("translateadd", "Invoke-TranslateAdd", "Traduzir com kli"),
         [Tuple]::Create("translatedel", "Invoke-translateDel", "Remover tradução com kli"),
         [Tuple]::Create("kscript", "Invoke-NewDbScript", "Recuperar nova chave de script"),

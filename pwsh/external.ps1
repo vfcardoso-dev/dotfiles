@@ -3,5 +3,34 @@
 # Previsão do Tempo
 function Invoke-WttrIn { Invoke-RestMethod http://wttr.in }
 
-# aliases
-new-alias -name "wttr" -value Invoke-WttrIn
+# A new hope
+function Invoke-ANewHope { telnet towel.blinkenlights.nl }
+
+
+function Invoke-GetAllFunctions {
+    $aliases = New-Object System.Collections.ArrayList;
+    $aliases.AddRange((
+        [Tuple]::Create("weather", "Invoke-WttrIn", "Previsão do Tempo"),
+        [Tuple]::Create("anewhope", "Invoke-ANewHope", "A new hope")
+    ));
+    return $aliases
+}
+
+function Invoke-HelpExternal {
+    write-host '==============================='
+    write-host 'Ajuda - Seção EXTERNAL:'
+    write-host '==============================='
+
+    foreach ($i in Invoke-GetAllFunctions) {
+        write-host "- $($i.Item1):   $($i.Item3)"
+    }
+
+    write-host ''
+}
+
+# registrando aliases
+new-alias -name "dothelp-external" Invoke-HelpExternal
+
+foreach ($i in Invoke-GetAllFunctions) {
+    new-alias -name $i.Item1 -value $i.Item2
+}

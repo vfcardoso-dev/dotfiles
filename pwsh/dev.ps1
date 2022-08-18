@@ -23,9 +23,31 @@ function Invoke-AndroidEmulator {
   }
 }
 
-# Previsão do Tempo
-function Invoke-WttrIn { Invoke-RestMethod http://wttr.in }
+function Invoke-GetAllFunctions {
+    $aliases = New-Object System.Collections.ArrayList;
+    $aliases.AddRange((
+        [Tuple]::Create("guid", "Invoke-GenerateNewGuid", "Gerar N guids aleatórias"),
+        [Tuple]::Create("grep", "findstr", "Encontrar strings em fluxos de dados"),
+        [Tuple]::Create("droid", "Invoke-AndroidEmulator", "Rodar emulador android")
+    ));
+    return $aliases
+}
 
-new-alias -name "guid" -value Invoke-GenerateNewGuid
-new-alias -name "grep" -value findstr
-new-alias -name "droid" -value Invoke-AndroidEmulator
+function Invoke-HelpDev {
+    write-host '==============================='
+    write-host 'Ajuda - Seção DEV:'
+    write-host '==============================='
+
+    foreach ($i in Invoke-GetAllFunctions) {
+        write-host "- $($i.Item1):   $($i.Item3)"
+    }
+
+    write-host ''
+}
+
+# registrando aliases
+new-alias -name "dothelp-dev" Invoke-HelpDev
+
+foreach ($i in Invoke-GetAllFunctions) {
+    new-alias -name $i.Item1 -value $i.Item2
+}

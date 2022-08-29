@@ -22,10 +22,10 @@ function Invoke-PatchMaster { cmd /c 'kli db patch drake_master 1' }
 function Invoke-PatchHfMaster { cmd /c 'kli db patch drake_master 2' }
 
 # Apply patches nos bancos testes do drake local (RC)
-function Invoke-PatchMaster { cmd /c 'kli db patch drake_testes 1' }
+function Invoke-PatchTest { cmd /c 'kli db patch drake_testes 1' }
 
 # Apply patches nos bancos testes do drake local (HF)
-function Invoke-PatchHfMaster { cmd /c 'kli db patch drake_testes 2' }
+function Invoke-PatchHfTest { cmd /c 'kli db patch drake_testes 2' }
 
 # Traduzir com kli
 function Invoke-TranslateAdd { 

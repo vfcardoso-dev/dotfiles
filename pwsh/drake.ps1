@@ -15,11 +15,17 @@ function Invoke-NewDbScript {
     kli db script $description
 }
 
-# Apply patches nos bancos master e testes do drake local (RC)
+# Apply patches nos bancos master e associados do drake local (RC)
 function Invoke-PatchMaster { cmd /c 'kli db patch drake_master 1' }
 
-# Apply patches nos bancos master e testes do drake local (HF)
+# Apply patches nos bancos master e associados do drake local (HF)
 function Invoke-PatchHfMaster { cmd /c 'kli db patch drake_master 2' }
+
+# Apply patches nos bancos testes do drake local (RC)
+function Invoke-PatchMaster { cmd /c 'kli db patch drake_testes 1' }
+
+# Apply patches nos bancos testes do drake local (HF)
+function Invoke-PatchHfMaster { cmd /c 'kli db patch drake_testes 2' }
 
 # Traduzir com kli
 function Invoke-TranslateAdd { 
@@ -79,8 +85,10 @@ function Invoke-GetAllFunctions {
         [Tuple]::Create("ngrok-drake", "Invoke-NgrokDrake", "Rodar Ngrok apontando para Drake local"),
         [Tuple]::Create("ngrok-storage", "Invoke-NgrokStorage", "Rodar Ngrok apontando para azure storage local"),
         [Tuple]::Create("clearall", "Invoke-ClearAll", "Clear all redis items and core.messages registers"),
-        [Tuple]::Create("patchrc", "Invoke-PatchMaster", "Apply patches nos bancos master e testes do drake local (RC)"),
-        [Tuple]::Create("patchhf", "Invoke-PatchHfMaster", "Apply patches nos bancos master e testes do drake local (HF)"),
+        [Tuple]::Create("patchrc", "Invoke-PatchMaster", "Apply patches no banco master e associados do drake local (RC)"),
+        [Tuple]::Create("patchhf", "Invoke-PatchHfMaster", "Apply patches no banco master e associados do drake local (HF)"),
+        [Tuple]::Create("patchtestrc", "Invoke-PatchTest", "Apply patches no banco testes do drake local (RC)"),
+        [Tuple]::Create("patchtesthf", "Invoke-PatchHfTest", "Apply patches no banco testes do drake local (HF)"),
         [Tuple]::Create("translateadd", "Invoke-TranslateAdd", "Traduzir com kli"),
         [Tuple]::Create("translatedel", "Invoke-translateDel", "Remover tradução com kli"),
         [Tuple]::Create("kscript", "Invoke-NewDbScript", "Recuperar nova chave de script"),

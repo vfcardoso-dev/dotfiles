@@ -10,7 +10,7 @@ function Invoke-AudioHeadset { nircmd setdefaultsounddevice $headsetDeviceName 1
 function Invoke-AudioMonitor { nircmd setdefaultsounddevice $hdmiDeviceName 1 && nircmd infobox "Audio: $hdmiDeviceName" "Info" }
 
 
-function Invoke-GetAllFunctions {
+function Invoke-GetAllFunctionsAudio {
     $aliases = New-Object System.Collections.ArrayList;
     $aliases.AddRange((
         [Tuple]::Create("audio-headset", "Invoke-AudioHeadset", "Define HEADSET como saída de audio padrão"),
@@ -24,7 +24,7 @@ function Invoke-HelpAudio {
     write-host 'Ajuda - Seção AUDIO:'
     write-host '==============================='
 
-    foreach ($i in Invoke-GetAllFunctions) {
+    foreach ($i in Invoke-GetAllFunctionsAudio) {
         write-host "- $($i.Item1):   $($i.Item3)"
     }
 
@@ -34,6 +34,6 @@ function Invoke-HelpAudio {
 # registrando aliases
 new-alias -name "dothelp-audio" Invoke-HelpAudio
 
-foreach ($i in Invoke-GetAllFunctions) {
+foreach ($i in Invoke-GetAllFunctionsAudio) {
     new-alias -name $i.Item1 -value $i.Item2
 }

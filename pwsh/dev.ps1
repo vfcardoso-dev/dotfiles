@@ -23,7 +23,7 @@ function Invoke-AndroidEmulator {
   }
 }
 
-function Invoke-GetAllFunctions {
+function Invoke-GetAllFunctionsDev {
     $aliases = New-Object System.Collections.ArrayList;
     $aliases.AddRange((
         [Tuple]::Create("guid", "Invoke-GenerateNewGuid", "Gerar N guids aleatórias"),
@@ -38,7 +38,7 @@ function Invoke-HelpDev {
     write-host 'Ajuda - Seção DEV:'
     write-host '==============================='
 
-    foreach ($i in Invoke-GetAllFunctions) {
+    foreach ($i in Invoke-GetAllFunctionsDev) {
         write-host "- $($i.Item1):   $($i.Item3)"
     }
 
@@ -48,6 +48,6 @@ function Invoke-HelpDev {
 # registrando aliases
 new-alias -name "dothelp-dev" Invoke-HelpDev
 
-foreach ($i in Invoke-GetAllFunctions) {
+foreach ($i in Invoke-GetAllFunctionsDev) {
     new-alias -name $i.Item1 -value $i.Item2
 }

@@ -79,7 +79,7 @@ function Invoke-SwitchDb {
     write-host "Bancos master e testes definidos para o ambiente '$($suffix)'";
 }
 
-function Invoke-GetAllFunctions {
+function Invoke-GetAllFunctionsDrake {
     $aliases = New-Object System.Collections.ArrayList;
     $aliases.AddRange((
         [Tuple]::Create("ngrok-drake", "Invoke-NgrokDrake", "Rodar Ngrok apontando para Drake local"),
@@ -102,7 +102,7 @@ function Invoke-HelpDrake {
     write-host 'Ajuda - Seção DRAKE:'
     write-host '==============================='
 
-    foreach ($i in Invoke-GetAllFunctions) {
+    foreach ($i in Invoke-GetAllFunctionsDrake) {
         write-host "- $($i.Item1):   $($i.Item3)"
     }
 
@@ -112,6 +112,6 @@ function Invoke-HelpDrake {
 # registrando aliases
 new-alias -name "dothelp-drake" Invoke-HelpDrake
 
-foreach ($i in Invoke-GetAllFunctions) {
+foreach ($i in Invoke-GetAllFunctionsDrake) {
     new-alias -name $i.Item1 -value $i.Item2
 }

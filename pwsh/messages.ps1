@@ -29,7 +29,7 @@ function Invoke-Coffee {
 
 
 
-function Invoke-GetAllFunctions {
+function Invoke-GetAllFunctionsMessages {
     $aliases = New-Object System.Collections.ArrayList;
     $aliases.AddRange((
         [Tuple]::Create("toilet", "Invoke-Toilet", "Exibe mensagem 'Volto Logo' com toilet"),
@@ -43,7 +43,7 @@ function Invoke-HelpMessages {
     write-host 'Ajuda - Seção MESSAGES:'
     write-host '==============================='
 
-    foreach ($i in Invoke-GetAllFunctions) {
+    foreach ($i in Invoke-GetAllFunctionsMessages) {
         write-host "- $($i.Item1):   $($i.Item3)"
     }
 
@@ -53,6 +53,6 @@ function Invoke-HelpMessages {
 # registrando aliases
 new-alias -name "dothelp-messages" Invoke-HelpMessages
 
-foreach ($i in Invoke-GetAllFunctions) {
+foreach ($i in Invoke-GetAllFunctionsMessages) {
     new-alias -name $i.Item1 -value $i.Item2
 }

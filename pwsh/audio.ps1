@@ -32,7 +32,7 @@ function Invoke-HelpAudio {
 }
 
 # registrando aliases
-new-alias -name "dothelp-audio" Invoke-HelpAudio
+new-alias -name "dotfiles-help-audio" Invoke-HelpAudio
 
 foreach ($i in Invoke-GetAllFunctionsAudio) {
     new-alias -name $i.Item1 -value $i.Item2

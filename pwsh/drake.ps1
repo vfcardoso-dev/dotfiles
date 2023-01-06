@@ -110,7 +110,7 @@ function Invoke-HelpDrake {
 }
 
 # registrando aliases
-new-alias -name "dothelp-drake" Invoke-HelpDrake
+new-alias -name "dotfiles-help-drake" Invoke-HelpDrake
 
 foreach ($i in Invoke-GetAllFunctionsDrake) {
     new-alias -name $i.Item1 -value $i.Item2

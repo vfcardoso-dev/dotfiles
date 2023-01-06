@@ -29,7 +29,7 @@ function Invoke-HelpExternal {
 }
 
 # registrando aliases
-new-alias -name "dothelp-external" Invoke-HelpExternal
+new-alias -name "dotfiles-help-external" Invoke-HelpExternal
 
 foreach ($i in Invoke-GetAllFunctionsExternal) {
     new-alias -name $i.Item1 -value $i.Item2

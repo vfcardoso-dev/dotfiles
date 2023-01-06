@@ -46,7 +46,7 @@ function Invoke-HelpDev {
 }
 
 # registrando aliases
-new-alias -name "dothelp-dev" Invoke-HelpDev
+new-alias -name "dotfiles-help-dev" Invoke-HelpDev
 
 foreach ($i in Invoke-GetAllFunctionsDev) {
     new-alias -name $i.Item1 -value $i.Item2

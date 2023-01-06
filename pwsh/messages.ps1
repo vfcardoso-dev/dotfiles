@@ -51,7 +51,7 @@ function Invoke-HelpMessages {
 }
 
 # registrando aliases
-new-alias -name "dothelp-messages" Invoke-HelpMessages
+new-alias -name "dotfiles-help-messages" Invoke-HelpMessages
 
 foreach ($i in Invoke-GetAllFunctionsMessages) {
     new-alias -name $i.Item1 -value $i.Item2

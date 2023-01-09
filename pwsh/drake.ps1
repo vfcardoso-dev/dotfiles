@@ -29,14 +29,14 @@ function Invoke-PatchHfTest { cmd /c 'kli db patch drake_testes 2' }
 
 # Traduzir com kli
 function Invoke-TranslateAdd { 
-    param([Parameter(Mandatory=$true)][string] $term, [Parameter(Mandatory=$true)][string] $key)
-    kli text translate add $term JS__COMMON__$key 1
+    param([Parameter(Mandatory=$true)][string] $term, [Parameter(Mandatory=$true)][string] $key, [Parameter(Mandatory=$true)][int] $instance=1)
+    kli text translate add $term JS__COMMON__$key $instance
 }
 
 # Remover tradução com kli
 function Invoke-TranslateDel { 
-    param([Parameter(Mandatory=$true)][string] $key)
-    kli text translate del 1 $key
+    param([Parameter(Mandatory=$true)][string] $key, [Parameter(Mandatory=$true)][int] $instance=1)
+    kli text translate del $instance $key
 }
 
 # Alternar entre bancos master RC e HF

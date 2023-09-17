@@ -13,7 +13,8 @@ function Invoke-GenerateNewGuid {
 
 # Histórico do powershell
 function Invoke-PowershellHistory {
-  param([Parameter()][string] $search)
+  param([Parameter(Mandatory=$true)][string] $search)
+  
   Get-Content (Get-PSReadlineOption).HistorySavePath | ? { $_ -like "*$($search)*" }
 }
 
@@ -35,7 +36,7 @@ function Invoke-GetAllFunctionsDev {
         [Tuple]::Create("guid", "Invoke-GenerateNewGuid", "Gerar N guids aleatórias"),
         [Tuple]::Create("grep", "findstr", "Encontrar strings em fluxos de dados"),
         [Tuple]::Create("droid", "Invoke-AndroidEmulator", "Rodar emulador android"),
-        [Tuple]::Create("cmdhistory", "Invoke-PowershellHistory", "Histórico de comandos do powershell")
+        [Tuple]::Create("shistory", "Invoke-PowershellHistory", "Histórico de comandos do powershell")
     ));
     return $aliases
 }

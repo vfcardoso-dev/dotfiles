@@ -1,10 +1,13 @@
 # drake.ps1
 
 # Rodar Ngrok apontando para Drake local
-function Invoke-NgrokDrake { D:\Tools\ngrok\ngrok.exe http http://localhost:2500 -host-header="rewrite" }
+function Invoke-NgrokDrake { D:\Tools\ngrok\ngrok.exe http http://localhost:2500 --host-header="rewrite" }
 
 # Rodar Ngrok apontando para azure storage local
-function Invoke-NgrokStorage { D:\Tools\ngrok\ngrok.exe http https://127.0.0.1:10000 -host-header="rewrite" }
+function Invoke-NgrokStorage { D:\Tools\ngrok\ngrok.exe http "https://127.0.0.1:10000" --host-header="rewrite" }
+
+# Rodar Ngrok usando arquivo de configuração em %USERPROFILE%/.ngrok2/ngrok.yml
+function Invoke-NgrokStartAll { D:\Tools\ngrok\ngrok.exe start --all }
 
 # Clear All: Redis and Messages
 function Invoke-ClearAll { kli clear redis && kli clear messages _drake_ Ok }
@@ -79,11 +82,16 @@ function Invoke-SwitchDb {
     write-host "Bancos master e testes definidos para o ambiente '$($suffix)'";
 }
 
+function Invoke-ClearMobileRoot() {
+    rm -force -recurse node_modules && rm -force -recurse platforms && rm -force -recurse plugins && rm -force -recurse www
+}
+
 function Invoke-GetAllFunctionsDrake {
     $aliases = New-Object System.Collections.ArrayList;
     $aliases.AddRange((
         [Tuple]::Create("ngrok-drake", "Invoke-NgrokDrake", "Rodar Ngrok apontando para Drake local"),
         [Tuple]::Create("ngrok-storage", "Invoke-NgrokStorage", "Rodar Ngrok apontando para azure storage local"),
+        [Tuple]::Create("ngrok-all", "Invoke-NgrokStartAll", "Rodar Ngrok usando arquivo de configuração"),
         [Tuple]::Create("clearall", "Invoke-ClearAll", "Clear all redis items and core.messages registers"),
         [Tuple]::Create("patchrc", "Invoke-PatchMaster", "Apply patches no banco master e associados do drake local (RC)"),
         [Tuple]::Create("patchhf", "Invoke-PatchHfMaster", "Apply patches no banco master e associados do drake local (HF)"),
@@ -92,7 +100,8 @@ function Invoke-GetAllFunctionsDrake {
         [Tuple]::Create("translateadd", "Invoke-TranslateAdd", "Traduzir com kli"),
         [Tuple]::Create("translatedel", "Invoke-translateDel", "Remover tradução com kli"),
         [Tuple]::Create("kscript", "Invoke-NewDbScript", "Recuperar nova chave de script"),
-        [Tuple]::Create("switchdb", "Invoke-SwitchDb", "Alternar entre bancos master RC e HF")
+        [Tuple]::Create("switchdb", "Invoke-SwitchDb", "Alternar entre bancos master RC e HF"),
+        [Tuple]::Create("clearmobile", "Invoke-ClearMobileRoot", "Limpa as pastas de dependências e código auto-gerado do ionic")
     ));
     return $aliases
 }

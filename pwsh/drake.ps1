@@ -32,8 +32,15 @@ function Invoke-PatchHfTest { cmd /c 'kli db patch drake_testes 2' }
 
 # Traduzir com kli
 function Invoke-TranslateAdd { 
-    param([Parameter(Mandatory=$true)][string] $term, [Parameter(Mandatory=$true)][string] $key, [Parameter(Mandatory=$true)][int] $instance=1)
-    kli text translate add $term JS__COMMON__$key $instance
+    param(
+        [Parameter(Mandatory=$true)][string] $term, 
+        [Parameter(Mandatory=$true)][string] $key, 
+        [Parameter(Mandatory=$true)][int] $instance=1,
+        [Parameter(Mandatory=$false)][string] $preffix)
+
+    $preffix = $preffix -eq '' ? 'JS__COMMON__' : $preffix
+
+    kli text translate add $term $preffix$key $instance
 }
 
 # Remover tradução com kli

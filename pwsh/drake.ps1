@@ -36,9 +36,7 @@ function Invoke-TranslateAdd {
         [Parameter(Mandatory=$true)][string] $term, 
         [Parameter(Mandatory=$true)][string] $key, 
         [Parameter(Mandatory=$true)][int] $instance=1,
-        [Parameter(Mandatory=$false)][string] $preffix)
-
-    $preffix = $preffix -eq '' ? 'JS__COMMON__' : $preffix
+        [Parameter(Mandatory=$false)][string] $preffix = 'JS__COMMON__')
 
     kli text translate add $term $preffix$key $instance
 }

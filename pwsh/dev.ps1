@@ -12,6 +12,13 @@ function Invoke-GenerateNewGuid {
 }
 
 # Histórico do powershell
+function Invoke-CheckServiceStatus {
+  param([Parameter(Mandatory=$true)][string] $url)
+  
+  curl -s -o /dev/null -w "$url %{http_code}" $url; echo `r
+}
+
+# Histórico do powershell
 function Invoke-PowershellHistory {
   param([Parameter(Mandatory=$true)][string] $search)
   
@@ -86,7 +93,8 @@ function Invoke-GetAllFunctionsDev {
         [Tuple]::Create("grep", "findstr", "Encontrar strings em fluxos de dados"),
         [Tuple]::Create("droid", "Invoke-AndroidEmulator", "Rodar emulador android"),
         [Tuple]::Create("shistory", "Invoke-PowershellHistory", "Histórico de comandos do powershell"),
-        [Tuple]::Create("cpf", "Invoke-CreateCpf", "Cria N CPFs aleatórios válidos")
+        [Tuple]::Create("cpf", "Invoke-CreateCpf", "Cria N CPFs aleatórios válidos"),
+        [Tuple]::Create("svcstat", "Invoke-CheckServiceStatus", "Checa status de serviço online")
     ));
     return $aliases
 }

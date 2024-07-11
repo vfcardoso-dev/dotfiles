@@ -1,0 +1,17 @@
+version: "2"
+authtoken: 2OZbQF74qdKATNafvMnXvG8oAj1_4JFNnLWjKHa1rthK8tSxm
+# authtoken: 2PKhhZ1COvPND4xWFZWhp32Cgbs_6CjU7ZuyUNMihmxiPNMVJ # gabriel ponã
+tunnels:
+  drake:
+    addr: "http://localhost:2500"
+    proto: http
+    schemes:
+      - https
+    host_header: rewrite
+    compression: false
+  storage:
+    addr: "https://127.0.0.1:10000"
+    proto: http
+    schemes:
+      - https
+    host_header: rewrite

@@ -15,14 +15,14 @@ function Invoke-GenerateNewGuid {
 function Invoke-CheckServiceStatus {
   param([Parameter(Mandatory=$true)][string] $url)
   
-  curl -s -o /dev/null -w "$url %{http_code}" $url; echo `r
+  curl -s -o /dev/null -w "$url %{http_code}" $url; write-output `r
 }
 
 # Histórico do powershell
 function Invoke-PowershellHistory {
   param([Parameter(Mandatory=$true)][string] $search)
   
-  Get-Content (Get-PSReadlineOption).HistorySavePath | ? { $_ -like "*$($search)*" }
+  Get-Content (Get-PSReadlineOption).HistorySavePath | where-object { $_ -like "*$($search)*" }
 }
 
 # Rodar emulador android
@@ -32,7 +32,7 @@ function Invoke-AndroidEmulator {
   if ($avdName) {
     . $env:ANDROID_SDK_ROOT\emulator\emulator.exe -avd $avdName 
   } else {
-    echo "Escolha um AVD da lista e rode o comando novamente: droid NOME_DO_AVD"
+    write-output "Escolha um AVD da lista e rode o comando novamente: droid NOME_DO_AVD"
     . $env:ANDROID_SDK_ROOT\emulator\emulator.exe -list-avds
   }
 }
@@ -51,7 +51,7 @@ function CalculateCheckDigit {
   )
   
   $chunk4 = !$vd1 ? "" : $vd1;
-  [int[]]$numbers = "$chunk1$chunk2$chunk3$chunk4".ToCharArray() | % {iex $_};
+  [int[]]$numbers = "$chunk1$chunk2$chunk3$chunk4".ToCharArray() | foreach-object {invoke-expression $_};
 
   $sum = 0;
   $index = 0;

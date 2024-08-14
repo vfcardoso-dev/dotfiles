@@ -1,7 +1,17 @@
 # external.ps1
 
 # Previsão do Tempo
-function Invoke-WttrIn { Invoke-RestMethod http://wttr.in }
+function Invoke-WttrIn {
+    param([Parameter()][string] $location)
+
+    $location = $location.Replace(' ','+')
+
+    try {
+        Invoke-RestMethod "http://wttr.in/$location"
+    } catch {
+        Write-Host "Localização não encontrada... =("
+    }
+}
 
 # A new hope
 function Invoke-ANewHope { telnet towel.blinkenlights.nl }
@@ -11,6 +21,7 @@ function Invoke-GetAllFunctionsExternal {
     $aliases = New-Object System.Collections.ArrayList;
     $aliases.AddRange((
         [Tuple]::Create("weather", "Invoke-WttrIn", "Previsão do Tempo"),
+        [Tuple]::Create("wttr", "Invoke-WttrIn", "Previsão do Tempo"),
         [Tuple]::Create("anewhope", "Invoke-ANewHope", "A new hope")
     ));
     return $aliases

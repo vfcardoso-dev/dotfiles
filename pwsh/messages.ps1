@@ -1,8 +1,11 @@
 # messages.ps1
 
-function Invoke-Brb { # 150 x 38
+function Invoke-Brb { # 150 x 44
     clear-host
     write-host @"
+
+
+
 
 
 
@@ -40,12 +43,18 @@ function Invoke-Brb { # 150 x 38
 
 
 
+
+
+
 "@
 }
 
-function Invoke-Toilet { # 150 x 38
+function Invoke-Toilet { # 150 x 44
     clear-host
     write-host @"
+
+
+
 
 
 
@@ -83,13 +92,19 @@ function Invoke-Toilet { # 150 x 38
                                                                                  '--~-' ''
 
 
+
+                                                                                 
+
 "@
 }
 
 
-function Invoke-Coffee { # 150 x 38
+function Invoke-Coffee { # 150 x 44
     clear-host
     write-host @"
+
+
+
 
 
 
@@ -120,6 +135,9 @@ function Invoke-Coffee { # 150 x 38
                                                '._     """----.....______.....----"""     _.'
                                                   '""--..,,_____            _____,,..--""'
                                                                 '"""----"""'
+
+
+
 
 
 

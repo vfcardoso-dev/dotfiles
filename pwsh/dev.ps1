@@ -11,6 +11,49 @@ function Invoke-GenerateNewGuid {
   }
 }
 
+function Invoke-RemoveCsprojDuplicates {
+  Param(
+    [string]$filePath = $(throw "You must supply a file path")
+  )
+
+  $filePath = Resolve-Path $filePath
+
+  "> Searching for project files in $filePath"
+
+  $projectFiles = Get-ChildItem -Path $filePath -Include *.csproj -Recurse -Attributes !reparsepoint `
+  | Where-Object { $_.FullName -notmatch "\\packages\\?" } `
+  | Select-Object -ExpandProperty FullName
+  
+  "> Found $($projectFiles.Count) project files"
+  
+  Foreach($projectFile in $projectFiles) {
+      $xml = [xml] (Get-Content $projectFile)
+      
+      Write-Host "> $projectFile " -Foreground Green
+
+      $entries = $xml.Project.ItemGroup.Compile + $xml.Project.ItemGroup.Content + $xml.Project.ItemGroup.Folder | Group-Object Include
+      $duplicateEntries = $entries | Where-Object Count -gt 1
+
+      "- Found $($duplicateEntries.Count) duplicate entries"
+
+      if (!$duplicateEntries) {
+          continue
+      }
+      
+      foreach ($duplicateEntry in $duplicateEntries) {
+          While ($duplicateEntry.Group.Count -gt 1) {
+              $e = $duplicateEntry.Group[0]
+              $e.ParentNode.RemoveChild($e) | Out-Null
+              $duplicateEntry.Group.Remove($e) | Out-Null
+          }
+      }
+
+      $xml.Save($projectFile) | Out-Null
+
+      "- Removed $($duplicateEntries.Count) duplicate entries"
+  }
+}
+
 # Histórico do powershell
 function Invoke-CheckServiceStatus {
   param([Parameter(Mandatory=$true)][string] $url)
@@ -86,6 +129,12 @@ function Invoke-CreateCpf {
   }
 }
 
+function Invoke-Where {
+  param([Parameter()][string] $executable)
+
+  (get-command $executable).Path
+}
+
 function Invoke-GetAllFunctionsDev {
     $aliases = New-Object System.Collections.ArrayList;
     $aliases.AddRange((
@@ -94,7 +143,9 @@ function Invoke-GetAllFunctionsDev {
         [Tuple]::Create("droid", "Invoke-AndroidEmulator", "Rodar emulador android"),
         [Tuple]::Create("shistory", "Invoke-PowershellHistory", "Histórico de comandos do powershell"),
         [Tuple]::Create("cpf", "Invoke-CreateCpf", "Cria N CPFs aleatórios válidos"),
-        [Tuple]::Create("svcstat", "Invoke-CheckServiceStatus", "Checa status de serviço online")
+        [Tuple]::Create("svcstat", "Invoke-CheckServiceStatus", "Checa status de serviço online"),
+        [Tuple]::Create("rmdupcsproj", "Invoke-RemoveCsprojDuplicates", "Remove referências duplicadas no arquivo csproj"),
+        [Tuple]::Create("whereis", "Invoke-Where", "Semelhante ao comando 'where' do bash")
     ));
     return $aliases
 }
